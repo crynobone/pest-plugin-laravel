@@ -9,8 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: ['8.2', '8.3']
-        laravel: ['10', '11']
+        php: ['8.2', '8.3', '8.4']
+        laravel: ['11', '12']
         dependency-version: [prefer-lowest, prefer-stable]
         parallel: ['', '--parallel']
 
@@ -34,7 +34,7 @@ jobs:
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --no-progress --ansi
+      run: composer update --${{ matrix.dependency-version }} --no-interaction --no-progress --ansi --with="laravel/framework:^${{ matrix.laravel }}"
 
     - name: Unit Tests
       run: composer test:unit
